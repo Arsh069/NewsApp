@@ -8,4 +8,7 @@
     <item android:title="License"
         app:showAsAction="never"
         android:id="@+id/id_License"/>
+    <item android:title="Logout"
+        app:showAsAction="never"
+        android:id="@+id/id_Logout"/>
 </menu>

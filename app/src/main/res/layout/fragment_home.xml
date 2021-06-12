@@ -16,6 +16,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         tools:itemCount="18"
+        android:background="#EFEBEB"
         tools:listitem="@layout/item_news"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -23,14 +24,7 @@
         app:layout_constraintStart_toStartOf="parent">
     </androidx.recyclerview.widget.RecyclerView>
 
-    <View
-        android:id="@+id/v_blackscreen"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#E7E8EA"
-        tools:visibility="gone"
 
-        />
     <ProgressBar
         android:id="@+id/progressbar"
         android:layout_width="wrap_content"

@@ -32,9 +32,11 @@ class HomeFragment : Fragment() {
         val view: View= inflater.inflate(R.layout.fragment_home, container, false)
         val recyclerView: RecyclerView = view.findViewById(R.id.rv_recyclerView)
         val request=NewsService.newsInstance.getNews("in") //it holds our retrofit object(service)
+
         newsAdapter = NewsAdapter(requireContext())
         recyclerView.layoutManager =  LinearLayoutManager(requireContext())
         recyclerView.adapter = newsAdapter
+
 
 
         request.enqueue(object : retrofit2.Callback<NewsApi?> {
@@ -46,8 +48,7 @@ class HomeFragment : Fragment() {
 
 
                     progressbar.visibility = View.GONE
-                news!!.articles?.let { newsAdapter.setStateWiseTracker(it) }
-
+                    news!!.articles?.let { newsAdapter.setStateWiseTracker(it) }
                     recyclerView.adapter = newsAdapter
             //      }
 

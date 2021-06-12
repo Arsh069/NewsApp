@@ -1,9 +1,13 @@
 package com.example.news.Adapter
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.news.R
 import com.example.news.api.Article
@@ -28,6 +32,21 @@ class NewsAdapter(private val context: Context):RecyclerView.Adapter<NewsAdapter
         Picasso.with(context)
             .load(article.urlToImage)
             .into(holder.newsImage)
+
+        //on clicking
+
+        holder.itemView.setOnClickListener{
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(article.url.toString())
+            ContextCompat.startActivity(holder.itemView.context, intent, null)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            Toast.makeText(context, "${article.publishedAt}", Toast.LENGTH_SHORT).show()
+            return@setOnLongClickListener true
+        }
+
+
     }
 
     override fun getItemCount(): Int {
@@ -40,8 +59,8 @@ class NewsAdapter(private val context: Context):RecyclerView.Adapter<NewsAdapter
         val newsTittle=itemView.tv_tittle
         val newsDescription=itemView.tv_description
 
+     }
 
-    }
     fun setStateWiseTracker(list: List<Article>) {
         this.articles = list
         notifyDataSetChanged()
