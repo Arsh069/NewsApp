@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#0000E5FF"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeFragment">
 
@@ -16,7 +17,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         tools:itemCount="18"
-        android:background="#EFEBEB"
+        android:background="#2C2979FF"
         tools:listitem="@layout/item_news"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.example.news.Fragment.AboutFragment
 import com.example.news.Fragment.LicenseFragment
 import com.google.firebase.auth.FirebaseAuth
@@ -50,11 +51,12 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.id_License -> {
                 // Toast.makeText(this, "license selected", Toast.LENGTH_SHORT).show()
-                val a = supportFragmentManager.beginTransaction()
+               /* val a = supportFragmentManager.beginTransaction()
                 supportFragmentManager.popBackStack()
                 val frag = LicenseFragment()
                 a.replace(R.id.container_view, frag).addToBackStack("backStack")
-                a.commit()
+                a.commit()*/
+                startActivity(Intent(this, OssLicensesMenuActivity::class.java))
                 return true
 
             }

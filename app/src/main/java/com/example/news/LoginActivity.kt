@@ -31,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
         loginButton.setOnClickListener {
 
             if (TextUtils.isEmpty(usernameInput.text.toString())) {
-                usernameInput.setError("Please enter user name ")
+                usernameInput.setError("Please enter Email id ")
                 return@setOnClickListener
             } else if (TextUtils.isEmpty(passwordInput.text.toString())) {
                 passwordInput.setError("Please enter password ")

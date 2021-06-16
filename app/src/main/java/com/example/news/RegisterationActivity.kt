@@ -40,13 +40,25 @@ class RegisterationActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             else if(TextUtils.isEmpty(usernameInput.text.toString())) {
-                usernameInput.setError("Please enter user name ")
+                usernameInput.setError("Please enter Email id ")
                 return@setOnClickListener
             }
             else if(TextUtils.isEmpty(passwordInput.text.toString())) {
-                passwordInput.setError("Please enter password ")
+                passwordInput.setError("Please enter password (min. 6 digits) ")
                 return@setOnClickListener
             }
+           /*else if(TextUtils.isEmpty(passcnfrmInput.text.toString())) {
+                passwordInput.setError("Password mismatched")
+                return@setOnClickListener
+            }
+            else if(TextUtils.isEmpty(ageInput.text.toString())) {
+                passwordInput.setError("Please enter the correct age ")
+                return@setOnClickListener
+            }
+            else if(TextUtils.isEmpty(numberInput.text.toString())) {
+                passwordInput.setError("Please enter your 10 digit phone number ")
+                return@setOnClickListener
+            }*/
             auth.createUserWithEmailAndPassword(usernameInput.text.toString(),passwordInput.text.toString())
 
                 .addOnCompleteListener{    //we will add a listener and inside it we will check if login suceesful

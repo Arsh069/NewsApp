@@ -11,12 +11,14 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.news.R
 import com.example.news.api.Article
+import com.example.news.api.NewsApi
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_news.view.*
 
 class NewsAdapter(private val context: Context):RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     var articles= listOf<Article>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
 
     val v= LayoutInflater.from(parent.context).inflate(R.layout.item_news, parent, false)
@@ -61,8 +63,11 @@ class NewsAdapter(private val context: Context):RecyclerView.Adapter<NewsAdapter
 
      }
 
-    fun setStateWiseTracker(list: List<Article>) {
-        this.articles = list
+    fun setStateWiseTracker( list: List<Article>) {
+        
+        this.articles=list
         notifyDataSetChanged()
     }
+
+
 }
