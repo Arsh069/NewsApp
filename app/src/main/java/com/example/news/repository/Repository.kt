@@ -18,30 +18,34 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class Repository(application: Application ) {
+class Repository(var context: Context ) {
 
-    val showProgress=MutableLiveData<Boolean>()
-    val news=MutableLiveData<NewsApi>()
+    val showProgress = MutableLiveData<Boolean>()
+    var news = MutableLiveData<NewsApi>()
 
-    fun getPost(country:String) {
-        showProgress.value=true
+    suspend fun getPost(country: String,apiKey:String):Response<NewsApi> {
+        showProgress.value = true
+        return NewsService.getClient(context).getNews(country,apiKey)
 
-       val retrofit=Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
-          val service=retrofit.create(ApiInterface::class.java)
-          service.getNews(country).enqueue(object :Callback<NewsApi>{
+
+          //val retrofit=Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
+          //val service=retrofit.create(ApiInterface::class.java)
+
+     /*     service.getNews(country).enqueue(object :Callback<NewsApi>{
               override fun onResponse(call: Call<NewsApi>, response: Response<NewsApi>) {
                   val new=response.body()
                   showProgress.value=false
                   news.value=new
                   Log.d("data","success+${Gson().toJson(news.value.toString())}")
-
               }
               override fun onFailure(call: Call<NewsApi>, t: Throwable) {
                   //showProgress.value=false
                  showProgress.value=true
+
+
               }
+          })*/
 
-
-          })
     }
+
 }

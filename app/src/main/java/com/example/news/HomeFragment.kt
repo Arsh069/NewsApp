@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.news.Adapter.NewsAdapter
 import com.example.news.ViewModel.MainViewModel
+import com.example.news.ViewModel.MainViewModelFactory
 import com.example.news.api.Article
 import com.example.news.api.NewsApi
 import com.example.news.repository.Repository
@@ -23,29 +24,30 @@ import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
 
-    private lateinit var newsAdapter: NewsAdapter
+    private val newsAdapter: NewsAdapter by lazy{NewsAdapter(requireContext())}
 
     private lateinit var viewModel: MainViewModel
 
     private lateinit var repository: Repository
 
-
+    private var res= emptyList<Article>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_home, container, false)
-        val recyclerView: RecyclerView = view.findViewById(R.id.rv_recyclerView)
+        /*val recyclerView: RecyclerView = view.findViewById(R.id.rv_recyclerView)
 
 
+        val repository=Repository(this.requireContext())
+        val vmf=MainViewModelFactory(repository)
+        viewModel = ViewModelProvider(this,vmf).get(MainViewModel::class.java)
 
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
-        if (viewModel.news.value == null)
+       // if (viewModel.news.value == null)
             viewModel.getPost("in")
 
-        newsAdapter = NewsAdapter(requireContext())
+      //  newsAdapter = NewsAdapter(requireContext())
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = newsAdapter
 
@@ -59,30 +61,50 @@ class HomeFragment : Fragment() {
 
 
         viewModel.news.observe(viewLifecycleOwner, Observer {
-            newsAdapter.setStateWiseTracker(it.articles)
+            Log.d("BOLT","success"+it.toString())
+            newsAdapter.setStateWiseTracker(it.body()?.articles!!)
+
+        })*/
+
+
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val recyclerView: RecyclerView = view.findViewById(R.id.rv_recyclerView)
+
+
+        val repository=Repository(this.requireContext())
+        val vmf=MainViewModelFactory(repository)
+        viewModel = ViewModelProvider(this,vmf).get(MainViewModel::class.java)
+
+        // if (viewModel.news.value == null)
+        viewModel.getPost("in","5f320a3ed71348e991917ff684a7bdd4")
+
+        //  newsAdapter = NewsAdapter(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = newsAdapter
+
+
+        viewModel.showProgress.observe(viewLifecycleOwner, Observer {
+            if (it)
+                progressbar.visibility = VISIBLE
+            else
+                progressbar.visibility = GONE
         })
 
-///////////////////////////////////////////////////////
-        /*request.enqueue(object : retrofit2.Callback<NewsApi?> {
-            override fun onResponse(call: Call<NewsApi?>, response: Response<NewsApi?>) {
-                val news = response.body()
-             //   txt.text= news?.articles.toString()
-                Log.d("data","success"+response.toString())
-           //     if (news!=null){
 
-
-                    progressbar.visibility = View.GONE
-                    news!!.articles?.let { newsAdapter.setStateWiseTracker(it) }
-                    recyclerView.adapter = newsAdapter
-            //      }
-
+        viewModel.news.observe(viewLifecycleOwner, Observer {
+            Log.d("BOLT","success"+it.toString())
+            res= it.body()?.articles!!
+            it.body()?.let {
+                newsAdapter.setStateWiseTracker(res)
+                progressbar.visibility= GONE
             }
 
-            override fun onFailure(call: Call<NewsApi?>, t: Throwable) {
-                Log.d("error","error data"+t.message)
-            }
-        })*/
-        return view
+
+        })
     }
 }
 

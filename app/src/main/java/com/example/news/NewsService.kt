@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory
+import com.example.news.Connection.InternetConnectivity
 import com.example.news.Connection.checkConnection
 import kotlinx.coroutines.withContext
 import okhttp3.Cache
@@ -17,10 +18,11 @@ import java.io.File
 const val BASE_URL="https://newsapi.org/"
 
 object NewsService {
+    private const val cacheSize : Long = 10 * 1024 * 1024
 
     fun getClient(context: Context): ApiInterface {
-        var cache: Cache = Cache(context.cacheDir, 10 * 1024 * 1024)
-        var okHttpClient = OkHttpClient.Builder()
+        var cache: Cache = Cache(context.cacheDir, cacheSize)
+    /*    var okHttpClient = OkHttpClient.Builder()
             .cache(cache)
             .addInterceptor(Interceptor { chain ->
                 var request: Request = chain.request()
@@ -33,7 +35,35 @@ object NewsService {
                     ).build()
                 chain.proceed(request)
             }
-            ).build()
+            ).build()*/
+
+      val REWRITE_RESPONSE_INTERCEPTOR = Interceptor { chain ->
+          val originalResponse = chain.proceed(chain.request())
+          val cacheControl = originalResponse.header("Cache-Control")
+          var maxAge = 60
+          originalResponse.newBuilder()
+              .header("Cache-Control", "public, max-age=$maxAge")
+              .removeHeader("Pragma")
+              .build()
+      }
+        val REWRITE_RESPONSE_INTERCEPTOR_OFFLINE = Interceptor { chain ->
+            var request: Request = chain.request()
+            var maxStale = 60 * 60 * 24 * 30
+            if (!InternetConnectivity.isNetworkAvailable(context)!!) {
+                request = request.newBuilder()
+                    .header("Cache-Control", "public, only-if-cached, max-stale=$maxStale")
+                    .removeHeader("Pragma")
+                    .build()
+            }
+            chain.proceed(request)
+        }
+
+        val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+            .cache(cache)
+            .addNetworkInterceptor(REWRITE_RESPONSE_INTERCEPTOR)
+            .addInterceptor(REWRITE_RESPONSE_INTERCEPTOR_OFFLINE)
+            .build()
+
 
 
         val retrofit by lazy {

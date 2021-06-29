@@ -3,6 +3,7 @@
     package="com.example.news">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -11,10 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.News">
-        <activity android:name=".RegisterationActivity"></activity>
-        <activity android:name= ".MainActivity"/>
+        <activity android:name=".DetailsActivity"></activity>
+        <activity android:name=".RegisterationActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

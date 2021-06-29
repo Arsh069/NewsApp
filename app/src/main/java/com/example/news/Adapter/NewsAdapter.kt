@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.item_news.view.*
 
 class NewsAdapter(private val context: Context):RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
-    var articles= listOf<Article>()
+    private var articles: List<Article> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
 

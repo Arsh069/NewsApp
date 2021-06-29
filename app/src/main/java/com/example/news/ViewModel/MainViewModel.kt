@@ -11,22 +11,26 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Response
 
- class MainViewModel(application: Application):AndroidViewModel(application) {
+ class MainViewModel(private val repository: Repository):ViewModel() {
 
-     val repository=Repository(application)
+     //val repository=Repository(application)
+
      var showProgress: LiveData<Boolean>
-     val news:LiveData<NewsApi>
+     var news: MutableLiveData<Response<NewsApi>>
 
      init {
-         this.showProgress=repository.showProgress
-         this.news=repository.news
+         this.showProgress = repository.showProgress
+         this.news = MutableLiveData()
+         //this.news=repository.news
      }
 
+     // val myresponse:MutableLiveData<NewsApi> =MutableLiveData()
 
-   // val myresponse:MutableLiveData<NewsApi> =MutableLiveData()
-
-   fun getPost(country:String) {
-        repository.getPost(country)
-        }
-    }
+     fun getPost(country: String,apiKey:String) {
+         viewModelScope.launch {
+             val new1 = repository.getPost(country,apiKey)
+             news.value = new1
+         }
+     }
+ }
 
